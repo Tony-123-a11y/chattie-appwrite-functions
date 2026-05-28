@@ -4,8 +4,9 @@ import type { Req,Res } from "../types/handlerTypes.ts"
 export default async function chatHandler (req:Req,res:Res){
     try {
         const {message}= await JSON.parse(req.body);
+        
         const aiReply= await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3.5-flash",
             contents: message
         });
 
