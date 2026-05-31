@@ -1,6 +1,6 @@
 import  chatHandler  from "./handlers/chatHandler.ts";
 
-export default async ({ req, res, log }: {
+export default async ({ req, res, log ,error}: {
   req: {
     body: string;
     method: string;
@@ -11,7 +11,7 @@ export default async ({ req, res, log }: {
     json: (data: unknown, statusCode?: number) => void;
     send: (body: string, statusCode?: number) => void;
   };
-  log: (msg: string) => void;
+  log: (msg: string | undefined) => void;
   error: (msg: string) => void;
 }) => {
   log('Function triggered successfully');
@@ -20,7 +20,7 @@ export default async ({ req, res, log }: {
 
     switch (action) {
     case "chat":
-      return  chatHandler(req,res);
+      return  chatHandler(req,res,log);
 
     case "title":
       return res.json({
