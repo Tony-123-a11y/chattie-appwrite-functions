@@ -9,9 +9,10 @@ export default async function chatHandler(req: Req, res: Res,  log: (message: st
         const { message, chatId } =  JSON.parse(req.body);
         let chat;
         let currentChatId = chatId;
-        log("DatabaseId:")
-        log(process.env.DATABASE_ID)
-        log("CollectionID:")
+log(`GOOGLE_GEMINI_API_KEY: ${process.env.GOOGLE_GEMINI_API_KEY}`);
+log(`DATABASE_ID: ${process.env.DATABASE_ID}`);
+log(`CHATS_COLLECTION_ID: ${process.env.CHATS_COLLECTION_ID}`);
+log(`MESSAGES_COLLECTION_ID: ${process.env.MESSAGES_COLLECTION_ID}`);
                 
         log(process.env.CHATS_COLLECTION_ID)
         if (!currentChatId) {
