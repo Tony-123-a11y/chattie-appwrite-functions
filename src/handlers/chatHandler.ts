@@ -3,15 +3,20 @@ import type { Req, Res } from "../types/handlerTypes.ts"
 import { databases } from "../lib/appwrite.ts";
 import { ID } from "node-appwrite";
 
-export default async function chatHandler(req: Req, res: Res) {
+
+export default async function chatHandler(req: Req, res: Res,log:any) {
     try {
         const { message, chatId } =  JSON.parse(req.body);
         let chat;
         let currentChatId = chatId;
-
+        log("DatabaseId:")
+        log(process.env.DATABASE_ID)
+        log("CollectionID:")
+                
+        log(process.env.CHATS_COLLECTION_ID)
         if (!currentChatId) {
             chat = await databases.createDocument(
-                process.env.DATABASE_ID!,
+               process.env.DATABASE_ID!,
                 process.env.CHATS_COLLECTION_ID!,
                 ID.unique(),
                 {
