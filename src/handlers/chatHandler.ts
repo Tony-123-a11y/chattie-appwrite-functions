@@ -1,25 +1,65 @@
 import { ai } from "../lib/gemini.ts"
-import type { Req,Res } from "../types/handlerTypes.ts"
+import type { Req, Res } from "../types/handlerTypes.ts"
+import { databases } from "../lib/appwrite.ts";
+import { ID } from "node-appwrite";
 
-export default async function chatHandler (req:Req,res:Res){
+export default async function chatHandler(req: Req, res: Res) {
     try {
-        const {message}= await JSON.parse(req.body);
-        
-        const aiReply= await ai.models.generateContent({
+        const { message, chatId } =  JSON.parse(req.body);
+        let chat;
+        let currentChatId = chatId;
+
+        if (!currentChatId) {
+            chat = await databases.createDocument(
+                process.env.DATABASE_ID!,
+                process.env.CHATS_COLLECTION_ID!,
+                ID.unique(),
+                {
+                    title: message.slice(0, 50),
+                }
+            );
+           currentChatId = chat?.$id;   
+        }
+        const newMessage = await databases.createDocument(
+            process.env.DATABASE_ID!,
+            process.env.MESSAGES_COLLECTION_ID!,
+            ID.unique(),
+            {
+                chatId: currentChatId,
+                text: message,
+                role: "user",
+
+            }
+        )
+
+        const aiReply = await ai.models.generateContent({
             model: "gemini-3.5-flash",
             contents: message
         });
 
+        const replyMessage = await databases.createDocument(
+            process.env.DATABASE_ID!,
+            process.env.MESSAGES_COLLECTION_ID!,
+            ID.unique(),
+            {
+                chatId: currentChatId,
+                text: aiReply.text,
+                role: "user",
+
+            }
+        )
+
         return res.json({
-            reply:aiReply,
-            success:true
-        },200)
+            reply: aiReply.text,
+            chatId: currentChatId,
+            success: true
+        }, 200)
     } catch (error) {
         console.log(error)
-            return res.json({
-            reply:"Failed to generate response",
-            success:false
-        },401)
+        return res.json({
+            reply: "Failed to generate response",
+            success: false
+        }, 500)
     }
-   
+
 }
