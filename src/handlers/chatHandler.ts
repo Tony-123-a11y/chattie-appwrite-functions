@@ -1,7 +1,7 @@
 import { ai } from "../lib/gemini.ts"
 import type { Req, Res } from "../types/handlerTypes.ts"
-import { databases } from "../lib/appwrite.ts";
 import { ID } from "node-appwrite";
+import {tablesDB} from "../lib/appwrite.ts"
 
 
 export default async function chatHandler(req: Req, res: Res,  log: (message: string | undefined) => void) {
@@ -15,7 +15,7 @@ export default async function chatHandler(req: Req, res: Res,  log: (message: st
                 
         log(process.env.CHATS_COLLECTION_ID)
         if (!currentChatId) {
-            chat = await databases.createDocument(
+            chat = await tablesDB.createRow(
                process.env.DATABASE_ID!,
                 process.env.CHATS_COLLECTION_ID!,
                 ID.unique(),
@@ -25,7 +25,7 @@ export default async function chatHandler(req: Req, res: Res,  log: (message: st
             );
            currentChatId = chat?.$id;   
         }
-        const newMessage = await databases.createDocument(
+        const newMessage = await tablesDB.createRow(
             process.env.DATABASE_ID!,
             process.env.MESSAGES_COLLECTION_ID!,
             ID.unique(),
@@ -42,7 +42,7 @@ export default async function chatHandler(req: Req, res: Res,  log: (message: st
             contents: message
         });
 
-        const replyMessage = await databases.createDocument(
+        const replyMessage = await tablesDB.createRow(
             process.env.DATABASE_ID!,
             process.env.MESSAGES_COLLECTION_ID!,
             ID.unique(),

@@ -5,6 +5,6 @@
   "main": "src/server.ts",
   "dependencies": {
     "@google/genai": "^2.6.0",
-    "node-appwrite": "^14.0.0"
+    "node-appwrite": "^25.2.0"
   }
 }
