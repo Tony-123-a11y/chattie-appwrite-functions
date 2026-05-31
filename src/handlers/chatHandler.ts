@@ -4,7 +4,8 @@ import { databases } from "../lib/appwrite.ts";
 import { ID } from "node-appwrite";
 
 
-export default async function chatHandler(req: Req, res: Res,log:any) {
+export default async function chatHandler(req: Req, res: Res,  log: (message: string | undefined) => void,
+  error: (message: unknown) => void) {
     try {
         const { message, chatId } =  JSON.parse(req.body);
         let chat;
