@@ -18,12 +18,14 @@ export default async function getChatsHandler(
         Query.limit(50),
       ]
     );
-
+   
+    result.rows.map((row)=>{
+      log(JSON.stringify(row))
+    })
     
 
     const chats = result.rows.map((row: Record<string, unknown>) => 
       {
-        console.log("row:", row)
        return {
       id: row.$id,
       title: row.title,
