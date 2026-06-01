@@ -1,5 +1,6 @@
 import  chatHandler  from "./handlers/chatHandler.ts";
 import  getMessagesHandler  from "./handlers/getMessagesHandler.ts";
+import  getChatsHandler  from "./handlers/getChatsHandler.ts";
 
 export default async ({ req, res, log ,error}: {
   req: {
@@ -25,6 +26,9 @@ export default async ({ req, res, log ,error}: {
 
     case "getMessages":
       return  getMessagesHandler(req,res,log);
+
+    case "getChats":
+      return  getChatsHandler(req,res,log);
 
     case "title":
       return res.json({
