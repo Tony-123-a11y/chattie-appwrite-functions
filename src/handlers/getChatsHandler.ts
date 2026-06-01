@@ -19,12 +19,19 @@ export default async function getChatsHandler(
       ]
     );
 
-    const chats = result.rows.map((row: Record<string, unknown>) => ({
+    
+
+    const chats = result.rows.map((row: Record<string, unknown>) => 
+      {
+        console.log("row:", row)
+       return {
       id: row.$id,
       title: row.title,
       createdAt: row.$createdAt,
       updatedAt: row.$updatedAt,
-    }));
+        }
+
+    });
 
     return res.json({ chats, success: true }, 200);
   } catch (err) {
