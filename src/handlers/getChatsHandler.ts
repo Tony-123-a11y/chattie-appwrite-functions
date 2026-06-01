@@ -1,6 +1,7 @@
 import { Query } from "node-appwrite";
 import type { Req, Res } from "../types/handlerTypes.ts";
 import { tablesDB } from "../lib/appwrite.ts";
+import { ChatRow } from "../types/rowType.ts";
 
 export default async function getChatsHandler(
   req: Req,
@@ -24,16 +25,15 @@ export default async function getChatsHandler(
     })
     
 
-    const chats = result.rows.map((row: Record<string, unknown>) => 
-      {
-       return {
-      id: row.$id,
-      title: row.title,
-      createdAt: row.$createdAt,
-      updatedAt: row.$updatedAt,
-        }
 
-    });
+const chats = result.rows.map((row:ChatRow) => {
+  return {
+    id: row.$id,
+    title: row.title,
+    createdAt: row.$createdAt,
+    updatedAt: row.$updatedAt,
+  };
+});
 
     return res.json({ chats, success: true }, 200);
   } catch (err) {
