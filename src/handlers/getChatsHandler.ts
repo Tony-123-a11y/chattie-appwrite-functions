@@ -1,7 +1,7 @@
 import { Query } from "node-appwrite";
 import type { Req, Res } from "../types/handlerTypes.ts";
 import { tablesDB } from "../lib/appwrite.ts";
-import { ChatRow } from "../types/rowType.ts";
+import type { ChatRow } from "../types/rowType.ts";
 
 export default async function getChatsHandler(
   req: Req,
