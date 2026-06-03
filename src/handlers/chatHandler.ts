@@ -9,7 +9,16 @@ export default async function chatHandler(req: Req, res: Res, log: (message: str
         const { message, chatId } = JSON.parse(req.body);
         let chat;
         let currentChatId = chatId;
-
+        const userId = req.headers["x-appwrite-user-id"];
+        if (!userId) {
+            return res.json(
+                {
+                    success: false,
+                    error: "Unauthorized",
+                },
+                401
+            );
+        }
         if (!currentChatId) {
             chat = await tablesDB.createRow(
                 process.env.DATABASE_ID!,
@@ -17,6 +26,7 @@ export default async function chatHandler(req: Req, res: Res, log: (message: str
                 ID.unique(),
                 {
                     title: message.slice(0, 50),
+                    userId
                 }
             );
             currentChatId = chat?.$id;

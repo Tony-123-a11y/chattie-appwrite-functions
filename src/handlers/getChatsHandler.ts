@@ -9,12 +9,17 @@ export default async function getChatsHandler(
   log: (message: string | undefined) => void
 ) {
   try {
+    const userId = req.headers["x-appwrite-user-id"];
+
+  log(`User ID: ${userId}`);
     log("Fetching all chats");
 
+  
     const result = await tablesDB.listRows(
       process.env.DATABASE_ID!,
       process.env.CHATS_COLLECTION_ID!,
       [
+        Query.equal("userId", userId),
         Query.orderDesc("$createdAt"),
         Query.limit(50),
       ]
