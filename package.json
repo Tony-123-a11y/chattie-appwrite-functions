@@ -1,6 +1,7 @@
 {
   "name": "chattie-appwrite-functions",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/server.ts",
   "dependencies": {
     "@google/genai": "^2.6.0",
