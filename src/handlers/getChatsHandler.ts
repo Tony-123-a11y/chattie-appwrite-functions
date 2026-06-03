@@ -10,7 +10,7 @@ export default async function getChatsHandler(
 ) {
   try {
     const userId = req.headers["x-appwrite-user-id"];
-
+     
   log(`User ID: ${userId}`);
     log("Fetching all chats");
 

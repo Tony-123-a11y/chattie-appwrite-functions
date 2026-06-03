@@ -9,12 +9,26 @@ export default async function getMessagesHandler(
 ) {
   try {
     const { chatId } = JSON.parse(req.body);
-
+    
+    const chat = await tablesDB.getRow({
+      databaseId: process.env.DATABASE_ID!,
+      tableId: process.env.CHATS_COLLECTION_ID!,
+      rowId: chatId,
+    });
+    const userId = req.headers["x-appwrite-user-id"];
+    // Authorize the user trying to access messages
+    if (userId === chat.userId) {
+      return res.json({
+        reply: "Unauthorized",
+        success: false
+      }, 500)
+    }
     if (!chatId) {
       return res.json({ error: "chatId is required", success: false }, 400);
     }
 
     log(`Fetching messages for chat: ${chatId}`);
+
 
     const result = await tablesDB.listRows(
       process.env.DATABASE_ID!,
