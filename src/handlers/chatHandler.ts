@@ -11,13 +11,10 @@ export default async function chatHandler(req: Req, res: Res, log: (message: str
         let currentChatId = chatId;
         const userId = req.headers["x-appwrite-user-id"];
         if (!userId) {
-            return res.json(
-                {
-                    success: false,
-                    error: "Unauthorized",
-                },
-                401
-            );
+            return res.json({
+            reply: "Unauthorized",
+            success: false
+        }, 500)
         }
         if (!currentChatId) {
             chat = await tablesDB.createRow(
